@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GenericCTF :: h4ck th3 pl4n3t</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <canvas id="matrix" aria-hidden="true"></canvas>
+  <div class="scanlines" aria-hidden="true"></div>
+
+  <main class="terminal">
+    <header class="hero">
+      <figure class="anon">
+        <div class="float">
+          <img src="img/anonymous.jpg" alt="Анонімус у худі та масці Гая Фокса" width="170" height="190">
+        </div>
+      </figure>
+      <div class="hero-text">
+        <h1 class="glitch" data-text="GenericCTF">GenericCTF</h1>
+        <p class="motto">МИ — ANONYMOUS. МИ НЕ ПРОЩАЄМО. МИ НЕ ЗАБУВАЄМО.<br>ЧЕКАЙТЕ НА НАС. <span class="ok">200 OK</span></p>
+        <p class="tip" id="tip"></p>
+      </div>
+    </header>
+
+    <section class="console" aria-live="polite">
+      <div class="console-bar">
+        <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+        <span class="console-title">root@mainframe:~# ./hack --target=challenges</span>
+      </div>
+      <pre id="log" class="log"></pre>
+    </section>
+
+    <form id="filters" class="filters">
+      <label>&gt; grep
+        <input type="search" name="search" placeholder="назва задачі" autocomplete="off">
+      </label>
+      <label>&gt; category
+        <select name="category"><option value="">*</option></select>
+      </label>
+      <label>&gt; difficulty
+        <select name="difficulty">
+          <option value="">*</option>
+          <option value="easy">script kiddie</option>
+          <option value="medium">h4x0r</option>
+          <option value="hard">1337 elite</option>
+        </select>
+      </label>
+      <label>&gt; sort
+        <select name="ordering">
+          <option value="-created_at">найновіші</option>
+          <option value="-points">найбільше балів</option>
+          <option value="points">найменше балів</option>
+        </select>
+      </label>
+      <button type="submit">ЗЛАМАТИ</button>
+    </form>
+
+    <section class="results">
+      <h2>&gt;&gt; ВИКРАДЕНІ ЗАДАЧІ <span id="count"></span></h2>
+      <ul id="challenges" class="challenges"></ul>
+      <nav class="pager">
+        <button type="button" id="prev" disabled>&lt;&lt; назад у минуле</button>
+        <button type="button" id="next" disabled>далі в кіберпростір &gt;&gt;</button>
+      </nav>
+    </section>
+
+    <footer class="footer">
+      <p>Під час створення цього сайту жоден мейнфрейм не постраждав. Майже.</p>
+      <p class="small">frontend :5500 → backend <span id="api-url"></span></p>
+    </footer>
+  </main>
+
+  <dialog id="detail" class="detail">
+    <pre id="detail-body"></pre>
+    <form method="dialog"><button>[ESC] вийти з мейнфрейму</button></form>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
