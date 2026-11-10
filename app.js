@@ -1,11 +1,3 @@
-const API_URL = "http://127.0.0.1:8001/api/v1";
-
-const DIFFICULTY = {
-  easy: "script kiddie",
-  medium: "h4x0r",
-  hard: "1337 elite",
-};
-
 const TIPS = [
   "Порада: Caps Lock додає +50% до швидкості хакінгу.",
   "Порада: справжні хакери працюють лише в капюшоні. Навіть влітку.",
@@ -14,6 +6,7 @@ const TIPS = [
   "Порада: завантажте ще трохи RAM. Безкоштовно. Без SMS.",
   "Порада: кажіть «I'm in» після кожного успішного GET.",
   "Порада: зелений текст на чорному тлі — це 90% безпеки.",
+  "Порада: JWT — не пароль, але показувати його друзям теж не варто.",
 ];
 
 const HACK_LINES = [
@@ -23,7 +16,6 @@ const HACK_LINES = [
   "Розшифровка паролю: hunter2 ... ok",
 ];
 
-const log = document.getElementById("log");
 const list = document.getElementById("challenges");
 const count = document.getElementById("count");
 const form = document.getElementById("filters");
@@ -37,18 +29,6 @@ let nextUrl = null;
 
 document.getElementById("api-url").textContent = API_URL;
 
-/* ---------- console ---------- */
-
-function print(text, kind = "") {
-  const line = document.createElement("span");
-  if (kind) line.className = kind;
-  line.textContent = `> ${text}\n`;
-  log.append(line);
-  log.scrollTop = log.scrollHeight;
-}
-
-const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
 async function hackingIntro() {
   for (const text of HACK_LINES) {
     print(text);
@@ -56,34 +36,12 @@ async function hackingIntro() {
   }
 }
 
-/* ---------- API ---------- */
-
-async function request(url) {
-  let response;
-  try {
-    response = await fetch(url);
-  } catch {
-    throw new Error(
-      `ACCESS DENIED: мейнфрейм не відповідає. Запустіть бекенд на ${API_URL} і перевірте CORS.`
-    );
-  }
-
-  const data = await response.json().catch(() => null);
-  if (!response.ok) {
-    const fields = data?.fields
-      ? " " + Object.entries(data.fields).map(([k, v]) => `${k}: ${v.join(" ")}`).join("; ")
-      : "";
-    throw new Error(`HTTP ${response.status}: ${data?.error ?? response.statusText}${fields}`);
-  }
-  return data;
-}
-
-function challengesUrl() {
+function challengesPath() {
   const params = new URLSearchParams();
   for (const [key, value] of new FormData(form)) {
     if (value) params.set(key, value);
   }
-  return `${API_URL}/challenges/?${params}`;
+  return `/challenges/?${params}`;
 }
 
 /* ---------- render ---------- */
@@ -137,34 +95,36 @@ function renderPage(page) {
 
 /* ---------- actions ---------- */
 
-async function loadChallenges(url = challengesUrl()) {
-  print(`GET ${url}`);
+async function loadChallenges(path = challengesPath()) {
+  print(`GET ${path}`);
   try {
-    const page = await request(url);
+    const page = await api(path);
     renderPage(page);
     print(`I'm in. Викрадено задач: ${page.results.length} з ${page.count}.`);
   } catch (error) {
-    print(error.message, "err");
+    print(errorText(error), "err");
   }
 }
 
 async function loadCategories() {
   try {
-    const categories = await request(`${API_URL}/categories/`);
+    const categories = await api("/categories/", {
+      auth: false
+    });
     const select = form.elements.category;
     for (const category of categories) {
       select.append(new Option(category.name, category.id));
     }
     print(`Категорій знайдено: ${categories.length}.`);
   } catch (error) {
-    print(error.message, "err");
+    print(errorText(error), "err");
   }
 }
 
 async function openDetail(id) {
-  print(`GET ${API_URL}/challenges/${id}/`);
+  print(`GET /challenges/${id}/`);
   try {
-    const c = await request(`${API_URL}/challenges/${id}/`);
+    const c = await api(`/challenges/${id}/`);
     dialogBody.textContent = [
       `== ${c.title} ==`,
       "",
@@ -173,14 +133,14 @@ async function openDetail(id) {
       `складність : ${DIFFICULTY[c.difficulty] ?? c.difficulty}`,
       `бали       : ${c.points} XP`,
       `категорія  : ${c.category.name}`,
-      `статус     : ${c.status}`,
+      `статус     : ${STATUS[c.status] ?? c.status}`,
       `підключення: ${c.connection_info || "—"}`,
       `first blood: ${c.first_blood?.user?.nickname ?? "ще ніхто. Будь першим."}`,
       `створено   : ${new Date(c.created_at).toLocaleString("uk-UA")}`,
     ].join("\n");
     dialog.showModal();
   } catch (error) {
-    print(error.message, "err");
+    print(errorText(error), "err");
   }
 }
 
@@ -194,6 +154,7 @@ nextBtn.addEventListener("click", () => nextUrl && loadChallenges(nextUrl));
 /* ---------- tips ---------- */
 
 let tipIndex = 0;
+
 function nextTip() {
   document.getElementById("tip").textContent = TIPS[tipIndex];
   tipIndex = (tipIndex + 1) % TIPS.length;
@@ -201,42 +162,10 @@ function nextTip() {
 nextTip();
 setInterval(nextTip, 5000);
 
-/* ---------- matrix rain ---------- */
-
-function matrixRain() {
-  const canvas = document.getElementById("matrix");
-  const ctx = canvas.getContext("2d");
-  const chars = "アイウエオカキクケコサシスセソ0123456789ABCDEF$#@%&";
-  const size = 16;
-  let drops = [];
-
-  function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    drops = Array.from({ length: Math.ceil(canvas.width / size) }, () =>
-      Math.floor((Math.random() * canvas.height) / size)
-    );
-  }
-
-  function draw() {
-    ctx.fillStyle = "rgba(2, 6, 2, 0.08)";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "#33ff66";
-    ctx.font = `${size}px monospace`;
-    drops.forEach((y, x) => {
-      ctx.fillText(chars[Math.floor(Math.random() * chars.length)], x * size, y * size);
-      drops[x] = y * size > canvas.height && Math.random() > 0.975 ? 0 : y + 1;
-    });
-  }
-
-  resize();
-  window.addEventListener("resize", resize);
-  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    setInterval(draw, 50);
-  }
-}
-
 /* ---------- start ---------- */
 
-matrixRain();
-hackingIntro().then(() => Promise.all([loadCategories(), loadChallenges()]));
+initNav();
+hackingIntro().then(() => {
+  showFlash();
+  return Promise.all([loadCategories(), loadChallenges()]);
+});
