@@ -34,7 +34,3 @@
 3. Відкрийте `http://localhost:5500` у браузері.
 
 Якщо бекенд не запущено або CORS не налаштовано, у терміналі на сторінці з'явиться `ACCESS DENIED`.
-
-## Зображення
-
-Фото: [Rhema Kallianpur](https://unsplash.com/@rhemakallianpur) на [Unsplash](https://unsplash.com/photos/fHVfO6CyxuU), ліцензія Unsplash.
