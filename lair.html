@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="uk">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>GenericCTF :: секретний бункер</title>
+        <link rel="stylesheet" href="style.css">
+        <script src="common.js"></script>
+        <script>requireAuth();</script>
+    </head>
+    <body>
+        <canvas id="matrix" aria-hidden="true"></canvas>
+        <div class="scanlines" aria-hidden="true"></div>
+        <main class="terminal">
+            <nav id="nav" class="topnav" aria-label="Навігація">
+            </nav>
+            <header class="page-head">
+                <h1 class="glitch" data-text="cd /secret/bunker">cd /secret/bunker</h1>
+                <p class="subtitle">Сюди пускають лише своїх. Якщо ви з кіберполіції — це навчальний проєкт, чесно.</p>
+                <p class="tip" id="greeting">Перевіряю рівень допуску...</p>
+            </header>
+            <section class="console" aria-live="polite">
+                <div class="console-bar">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="console-title">root@bunker:~# tail -f /var/log/hack.log</span>
+                </div>
+                <pre id="log" class="log"></pre>
+            </section>
+            <section class="panel">
+                <h2>&gt;&gt; ЗАЛИТИ СВІЖИЙ ЕКСПЛОЙТ</h2>
+                <form id="challenge-form" class="form form-grid" novalidate>
+                    <label>
+                        &gt; назва
+                        <input name="title" maxlength="256" required>
+                        <span class="field-error" data-error-for="title"></span>
+                    </label>
+                    <label>
+                        &gt; категорія
+                        <select name="category" required></select>
+                        <span class="field-error" data-error-for="category"></span>
+                    </label>
+                    <label>
+                        &gt; складність
+                        <select name="difficulty">
+                            <option value="easy">script kiddie</option>
+                            <option value="medium">h4x0r</option>
+                            <option value="hard">1337 elite</option>
+                        </select>
+                        <span class="field-error" data-error-for="difficulty"></span>
+                    </label>
+                    <label>
+                        &gt; бали
+                        <input name="points" type="number" min="0" value="100" required>
+                        <span class="field-error" data-error-for="points"></span>
+                    </label>
+                    <label class="wide">
+                        &gt; опис
+                        <textarea name="description" rows="3" required></textarea>
+                        <span class="field-error" data-error-for="description"></span>
+                    </label>
+                    <label>
+                        &gt; флаг
+                        <input name="flag" placeholder="CTF{...}" required>
+                        <span class="field-error" data-error-for="flag"></span>
+                    </label>
+                    <label>
+                        &gt; підключення (необов'язково)
+                        <input name="connection_info"
+                               maxlength="512"
+                               placeholder="nc ctf.local 1337">
+                        <span class="field-error" data-error-for="connection_info"></span>
+                    </label>
+                    <button type="submit" class="wide">ЗАЛИТИ</button>
+                </form>
+            </section>
+            <section class="panel">
+                <h2>&gt;&gt; МОЇ ЕКСПЛОЙТИ <span id="my-count"></span></h2>
+                <ul id="my-challenges" class="rows">
+                </ul>
+            </section>
+            <section id="admin" class="panel admin" hidden>
+                <h2>&gt;&gt; РАДА АНОНІМУСІВ: МОДЕРАЦІЯ <span id="review-count"></span></h2>
+                <ul id="review-challenges" class="rows">
+                </ul>
+                <h2>&gt;&gt; НОВА КАТЕГОРІЯ</h2>
+                <form id="category-form" class="form form-inline" novalidate>
+                    <label>
+                        &gt; назва
+                        <input name="name" maxlength="100" placeholder="forensics" required>
+                        <span class="field-error" data-error-for="name"></span>
+                    </label>
+                    <button type="submit">СТВОРИТИ</button>
+                </form>
+            </section>
+            <footer class="footer">
+                <p>Цей бункер захищено JWT. І капюшоном.</p>
+            </footer>
+        </main>
+        <script src="lair.js"></script>
+    </body>
+</html>
