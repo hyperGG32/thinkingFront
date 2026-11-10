@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="uk">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>GenericCTF :: sudo login</title>
+        <link rel="stylesheet" href="style.css">
+        <script src="common.js"></script>
+        <script>redirectIfLoggedIn();</script>
+    </head>
+    <body>
+        <canvas id="matrix" aria-hidden="true"></canvas>
+        <div class="scanlines" aria-hidden="true"></div>
+        <main class="terminal">
+            <nav id="nav" class="topnav" aria-label="Навігація">
+            </nav>
+            <section class="panel auth-panel">
+                <figure class="anon anon-small">
+                    <div class="float">
+                        <img src="img/anonymous.jpg"
+                             alt="Двоє анонімусів у масках Гая Фокса"
+                             width="160"
+                             height="144">
+                    </div>
+                </figure>
+                <h1 class="glitch" data-text="sudo login">sudo login</h1>
+                <p class="subtitle">Введіть облікові дані. Обіцяємо не зливати їх на форум. Мабуть.</p>
+                <form id="login-form" class="form" novalidate>
+                    <label>
+                        &gt; codename
+                        <input name="username" autocomplete="username" required>
+                        <span class="field-error" data-error-for="username"></span>
+                    </label>
+                    <label>
+                        &gt; password
+                        <input name="password"
+                               type="password"
+                               autocomplete="current-password"
+                               placeholder="тільки не hunter2"
+                               required>
+                        <span class="field-error" data-error-for="password"></span>
+                    </label>
+                    <button type="submit">I'M IN</button>
+                </form>
+                <p class="hint">Ще не в легіоні? <a href="register.html">Приєднатися</a></p>
+            </section>
+            <section class="console" aria-live="polite">
+                <div class="console-bar">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="console-title">root@mainframe:~# ./login.sh</span>
+                </div>
+                <pre id="log" class="log"></pre>
+            </section>
+        </main>
+        <script src="login.js"></script>
+    </body>
+</html>

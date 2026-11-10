@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="uk">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>GenericCTF :: ./join_anonymous.sh</title>
+        <link rel="stylesheet" href="style.css">
+        <script src="common.js"></script>
+        <script>redirectIfLoggedIn();</script>
+    </head>
+    <body>
+        <canvas id="matrix" aria-hidden="true"></canvas>
+        <div class="scanlines" aria-hidden="true"></div>
+        <main class="terminal">
+            <nav id="nav" class="topnav" aria-label="Навігація">
+            </nav>
+            <section class="panel auth-panel">
+                <h1 class="glitch" data-text="./join_anonymous.sh">./join_anonymous.sh</h1>
+                <p class="subtitle">Анкета кандидата в хакери. Справжнє ім'я — необов'язково, ми ж анонімні.</p>
+                <form id="register-form" class="form" novalidate>
+                    <label>
+                        &gt; codename *
+                        <input name="username" maxlength="150" autocomplete="username" required>
+                        <span class="field-error" data-error-for="username"></span>
+                    </label>
+                    <label>
+                        &gt; email *
+                        <input name="email"
+                               type="email"
+                               maxlength="254"
+                               autocomplete="email"
+                               placeholder="name@example.com"
+                               required>
+                        <span class="field-error" data-error-for="email"></span>
+                    </label>
+                    <label>
+                        &gt; ім'я (необов'язково, ми й так знаємо)
+                        <input name="first_name" maxlength="150" autocomplete="given-name">
+                        <span class="field-error" data-error-for="first_name"></span>
+                    </label>
+                    <label>
+                        &gt; прізвище (теж необов'язково)
+                        <input name="last_name" maxlength="150" autocomplete="family-name">
+                        <span class="field-error" data-error-for="last_name"></span>
+                    </label>
+                    <label>
+                        &gt; password *
+                        <input name="password"
+                               type="password"
+                               maxlength="128"
+                               autocomplete="new-password"
+                               placeholder="мін. 8 символів, складніше за hunter2"
+                               required>
+                        <span class="field-error" data-error-for="password"></span>
+                    </label>
+                    <label>
+                        &gt; password ще раз *
+                        <input name="password_conf"
+                               type="password"
+                               maxlength="128"
+                               autocomplete="new-password"
+                               required>
+                        <span class="field-error" data-error-for="password_conf"></span>
+                    </label>
+                    <button type="submit">ПРИЄДНАТИСЯ ДО ЛЕГІОНУ</button>
+                </form>
+                <p class="hint">Вже в легіоні? <a href="login.html">Увійти</a></p>
+            </section>
+            <section class="console" aria-live="polite">
+                <div class="console-bar">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="console-title">root@mainframe:~# ./join_anonymous.sh</span>
+                </div>
+                <pre id="log" class="log"></pre>
+            </section>
+        </main>
+        <script src="register.js"></script>
+    </body>
+</html>
