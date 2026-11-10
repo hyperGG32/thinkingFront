@@ -172,9 +172,17 @@ body {
   border-radius: 50%;
 }
 
-.dot.red { background: #ff5f56; }
-.dot.yellow { background: #ffbd2e; }
-.dot.green { background: #27c93f; }
+.dot.red {
+  background: #ff5f56;
+}
+
+.dot.yellow {
+  background: #ffbd2e;
+}
+
+.dot.green {
+  background: #27c93f;
+}
 
 .console-title {
   margin-left: 8px;
@@ -218,6 +226,7 @@ body {
 
 input,
 select,
+textarea,
 button {
   font: inherit;
   color: var(--green);
@@ -229,6 +238,7 @@ button {
 
 input:focus,
 select:focus,
+textarea:focus,
 button:focus-visible {
   outline: 2px solid var(--green);
 }
@@ -311,9 +321,17 @@ button:disabled {
   font-size: 12px;
 }
 
-.badge.easy { color: var(--green); }
-.badge.medium { color: var(--amber); }
-.badge.hard { color: var(--red); }
+.badge.easy {
+  color: var(--green);
+}
+
+.badge.medium {
+  color: var(--amber);
+}
+
+.badge.hard {
+  color: var(--red);
+}
 
 .empty {
   grid-column: 1 / -1;
@@ -357,29 +375,263 @@ button:disabled {
   font-size: 12px;
 }
 
+/* ---------- nav ---------- */
+
+.topnav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding: 8px 12px;
+  border: 1px solid var(--green-dim);
+  background: rgba(0, 20, 0, 0.85);
+}
+
+.nav-pages,
+.nav-account {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.topnav a {
+  color: var(--green);
+  text-decoration: none;
+}
+
+.topnav a:hover,
+.topnav a[aria-current="page"] {
+  color: #000;
+  background: var(--green);
+  text-shadow: none;
+}
+
+.user-tag {
+  color: var(--amber);
+  text-shadow: 0 0 6px rgba(255, 204, 51, 0.5);
+}
+
+/* ---------- panels & forms ---------- */
+
+.page-head .glitch,
+.auth-panel .glitch {
+  font-size: clamp(26px, 5vw, 40px);
+  letter-spacing: 2px;
+}
+
+.subtitle {
+  margin: 0 0 12px;
+}
+
+.panel {
+  margin: 24px 0;
+  padding: 16px;
+  border: 1px solid var(--green-dim);
+  background: rgba(0, 15, 0, 0.9);
+}
+
+.panel h2 {
+  font-size: 18px;
+  margin: 0 0 12px;
+}
+
+.auth-panel {
+  max-width: 520px;
+  margin: 24px auto;
+  text-align: center;
+}
+
+.auth-panel .form {
+  text-align: left;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+}
+
+.form-grid .wide {
+  grid-column: 1 / -1;
+}
+
+.form-inline {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.form-inline button {
+  margin-top: 20px;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.form button[type="submit"] {
+  border-color: var(--red);
+  color: var(--red);
+  font-weight: bold;
+}
+
+.form button[type="submit"]:hover:not(:disabled) {
+  background: var(--red);
+  color: #000;
+}
+
+.field-error {
+  min-height: 1em;
+  color: var(--red);
+  text-shadow: 0 0 6px rgba(255, 59, 59, 0.6);
+}
+
+.hint a {
+  color: var(--amber);
+}
+
+.anon-small {
+  display: inline-block;
+}
+
+.anon-small img {
+  width: 160px;
+  height: 144px;
+}
+
+/* ---------- rows (private page) ---------- */
+
+.rows {
+  list-style: none;
+  margin: 0 0 24px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid var(--green-dark);
+}
+
+.row .meta {
+  font-size: 13px;
+  color: var(--green-dim);
+}
+
+.row-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.status {
+  font-size: 12px;
+}
+
+.status.draft {
+  color: var(--green-dim);
+}
+
+.status.review {
+  color: var(--amber);
+}
+
+.status.active {
+  color: var(--green);
+}
+
+.status.rejected {
+  color: var(--red);
+}
+
+button.danger {
+  border-color: var(--red);
+  color: var(--red);
+}
+
+button.danger:hover:not(:disabled) {
+  background: var(--red);
+  color: #000;
+}
+
+.admin {
+  border-color: var(--amber);
+}
+
 /* ---------- animations ---------- */
 
 @keyframes glitch {
-  0%, 92%, 100% { transform: translate(0, 0); }
-  94% { transform: translate(-4px, 1px); }
-  96% { transform: translate(4px, -1px); }
+
+  0%,
+  92%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  94% {
+    transform: translate(-4px, 1px);
+  }
+
+  96% {
+    transform: translate(4px, -1px);
+  }
 }
 
 @keyframes levitate {
-  0%, 100% { transform: translateY(0) rotate(-1deg); }
-  50% { transform: translateY(-16px) rotate(1.5deg); }
+
+  0%,
+  100% {
+    transform: translateY(0) rotate(-1deg);
+  }
+
+  50% {
+    transform: translateY(-16px) rotate(1.5deg);
+  }
 }
 
 @keyframes floor-shadow {
-  0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.9; }
-  50% { transform: translateX(-50%) scale(0.65); opacity: 0.4; }
+
+  0%,
+  100% {
+    transform: translateX(-50%) scale(1);
+    opacity: 0.9;
+  }
+
+  50% {
+    transform: translateX(-50%) scale(0.65);
+    opacity: 0.4;
+  }
 }
 
 @keyframes pulse {
-  50% { box-shadow: 0 0 14px rgba(255, 59, 59, 0.7); }
+  50% {
+    box-shadow: 0 0 14px rgba(255, 59, 59, 0.7);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   .float,
   .anon::after,
   .glitch::before,
